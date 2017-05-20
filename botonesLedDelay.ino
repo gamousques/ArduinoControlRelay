@@ -66,6 +66,7 @@ void setup()
   // Make input & enable pull-up resistors on switch pins
   for (i=0; i< NUMBUTTONS; i++) {
     pinMode(buttons[i], INPUT);
+    previous_keystate[i] = current_keystate[i] = HIGH;
 //    digitalWrite(buttons[i], HIGH);
   }
 
@@ -102,7 +103,7 @@ void loop()
     DOWNStatus = false;
     break; 
   default:
- 
+
     break;
   }
 
@@ -140,6 +141,7 @@ void loop()
     Serial.println("Timer Off" );  
     Reset();
   }
+
 
 }
 
