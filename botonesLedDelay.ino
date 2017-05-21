@@ -5,16 +5,20 @@
 long previousMillis = 0;        // will store last time LED was updated
 long interval = 60000;           // interval at which to blink (milliseconds) 2 mins
 
-
-#define CH1 8   // Connect Digital Pin 8 on Arduino to CH1 on Relay Module
-#define CH2 7   // Connect Digital Pin 8 on Arduino to CH2 on Relay Module
-
-
+//Pin definiton
+//buttos
 const int UPbuttonPin = 2;  // pushbutton 1 pin
 const int DOWNbuttonPin = 3;  // pushbutton 2 pin
 const int STOPbuttonPin = 4;  // pushbutton 3 pin
 
-const int WorkingLedPin =  12;    // LED pin
+//LED 
+const int WorkingLedPin =  5;    // LED pin
+
+//Relay
+const int  CHRelay1 = 7;  // Connect Digital Pin 8 on Arduino to CHRelay1 on Relay Module
+const int  CHRelay2 = 8; // Connect Digital Pin 8 on Arduino to CHRelay2 on Relay Module
+
+
 
 const int UP = 1;
 const int DOWN = 2;
@@ -46,15 +50,15 @@ void setup()
   pinMode(WorkingLedPin, OUTPUT);   
 
   //Set relays
-  pinMode(CH1, OUTPUT);
-  pinMode(CH2, OUTPUT);
-  digitalWrite(CH1, LOW);  
-  digitalWrite(CH2, LOW);  
+  pinMode(CHRelay1, OUTPUT);
+  pinMode(CHRelay2, OUTPUT);
+  digitalWrite(CHRelay1, LOW);  
+  digitalWrite(CHRelay2, LOW);  
 
   //Turn OFF any power to the Relay channels
   Serial.println("High Relays OFF");
-  digitalWrite(CH1,HIGH);
-  digitalWrite(CH2,HIGH);
+  digitalWrite(CHRelay1,HIGH);
+  digitalWrite(CHRelay2,HIGH);
 
 
   //Set buttons
@@ -173,8 +177,9 @@ bool CheckCountDown()
     retVal = true;
  
   }   
-     Serial.print("TIMER ");
+   /* Serial.print("TIMER ");
     Serial.println((currentMillis - previousMillis));
+    */
   return retVal;
 }
 
@@ -195,9 +200,9 @@ void SetRelayUp(bool st)
 {
   if(st == true)
   {
-     digitalWrite(CH2, LOW);   //Relay ON 
+     digitalWrite(CHRelay2, LOW);   //Relay ON 
   } else {
-     digitalWrite(CH2, HIGH);  //Relay off
+     digitalWrite(CHRelay2, HIGH);  //Relay off
   }
 }
 
@@ -205,10 +210,10 @@ void SetRelayDown(bool st)
 {
   if(st == true)
   {
-     digitalWrite(CH1, LOW);   //Relay ON
+     digitalWrite(CHRelay1, LOW);   //Relay ON
        
   } else {
-     digitalWrite(CH1, HIGH);  //Relay off
+     digitalWrite(CHRelay1, HIGH);  //Relay off
   }
 
 }
