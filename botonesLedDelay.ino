@@ -1,34 +1,37 @@
 
-// First we'll set up constants for the pin numbers.
-// This will make it easier to follow the code below.
+// Set up constants for the pin numbers.
 
+// Initialize Timer vvalues
 long previousMillis = 0;        // will store last time LED was updated
 long interval = 60000;           // interval at which to blink (milliseconds) 2 mins
 
-//Pin definiton
-//buttos
-const int UPbuttonPin = 2;  // pushbutton 1 pin
-const int DOWNbuttonPin = 3;  // pushbutton 2 pin
-const int STOPbuttonPin = 4;  // pushbutton 3 pin
+//Set Pin definiton
 
-//LED 
+//Pin for LED 
 const int WorkingLedPin =  5;    // LED pin
 
-//Relay
+//Pins for Relay
 const int  CHRelay1 = 7;  // Connect Digital Pin 8 on Arduino to CHRelay1 on Relay Module
 const int  CHRelay2 = 8; // Connect Digital Pin 8 on Arduino to CHRelay2 on Relay Module
 
 
+//Pin for buttons 
+const int UPbuttonPin = 2;  // pushbutton 1 pin
+const int DOWNbuttonPin = 3;  // pushbutton 2 pin
+const int STOPbuttonPin = 4;  // pushbutton 3 pin
 
+// Buttons names
 const int UP = 1;
 const int DOWN = 2;
 const int STOP = 3;
 
+// Buttons push indicators
 bool UPStatus = false;
 bool DOWNStatus = false;
 bool STOPStatus = false;
 bool WORKStatus = false;
 
+// Deboubce definitions 
 #define DEBOUNCE 3  // how many ms to debounce, 5+ ms is usually plenty
  
 //define the buttons that we'll use.
@@ -42,6 +45,7 @@ int buttonsName[] = {UP, DOWN, STOP};
 byte pressed[NUMBUTTONS], justpressed[NUMBUTTONS], justreleased[NUMBUTTONS];
 byte previous_keystate[NUMBUTTONS], current_keystate[NUMBUTTONS];
  
+
 void setup()
 {
   Serial.begin(9600); //set up serial port
@@ -74,9 +78,8 @@ void setup()
 //    digitalWrite(buttons[i], HIGH);
   }
 
-  //Test WORKING LED 
+  //Test WORK Led 
   digitalWrite(WorkingLedPin, HIGH);  // turn the LED on
- 
   delay(3000);
   digitalWrite(WorkingLedPin, LOW);  // turn the LED off
 
@@ -114,58 +117,59 @@ void loop()
   if (DOWNStatus == true && WORKStatus == false) 
   {
     Serial.println("En DOWN" );  
-    SetRelayDown(true);
-    SetWorkLed(true);
+    setRelayDown(true);
+    setWorkLed(true);
     WORKStatus = true;
        
     UPStatus = false;
     STOPStatus = false;
-    ResetCountDown();
+    resetCountDown();
     
   } else if (UPStatus == true && WORKStatus == false)
   {
     Serial.println("En UP" );  
-    SetRelayUp(true); 
-    SetWorkLed(true);
+    setRelayUp(true); 
+    setWorkLed(true);
     WORKStatus = true;  
 
     DOWNStatus = false;
     STOPStatus = false;
-    ResetCountDown();
+    resetCountDown();
         
   } else if (STOPStatus == true && WORKStatus == true)
   {
     Serial.println("En STOP" ); 
-    ResetCountDown(); 
-    Reset();
+    resetCountDown(); 
+    reset();
   }
 
-  if(CheckCountDown() == true && WORKStatus == true)
+  if(checkCountDown() == true && WORKStatus == true)
   {
     Serial.println("Timer Off" );  
-    Reset();
+    reset();
   }
 
 
 }
 
-void Reset()
+void reset()
 {
-    SetRelayUp(false);
-    SetRelayDown(false);  
-    SetWorkLed(false);
+    setRelayUp(false);
+    setRelayDown(false);  
+    setWorkLed(false);
     DOWNStatus = false;
     UPStatus = false;
     WORKStatus = false;
     STOPStatus = false;
 }
-void ResetCountDown()
+
+void resetCountDown()
 {
 
   previousMillis =millis();
 }
 
-bool CheckCountDown()
+bool checkCountDown()
 {
   bool retVal = false;
   
@@ -177,26 +181,22 @@ bool CheckCountDown()
     retVal = true;
  
   }   
-   /* Serial.print("TIMER ");
-    Serial.println((currentMillis - previousMillis));
-    */
+
   return retVal;
 }
 
-void SetWorkLed(bool st)
+void setWorkLed(bool st)
 {
   if(st == true)
   {
       digitalWrite(WorkingLedPin, HIGH);  // turn the LED on
-
   } else {
       digitalWrite(WorkingLedPin, LOW);  // turn the LED off
-
   }
 
 }
 
-void SetRelayUp(bool st)
+void setRelayUp(bool st)
 {
   if(st == true)
   {
@@ -206,7 +206,7 @@ void SetRelayUp(bool st)
   }
 }
 
-void SetRelayDown(bool st)
+void setRelayDown(bool st)
 {
   if(st == true)
   {
@@ -266,32 +266,4 @@ byte thisSwitch_justPressed() {
   return thisSwitch;
 }
   
-   /*
-  int button1State, button2State , button3State;  // variables to hold the pushbutton states
 
-  button1State = digitalRead(button1Pin);
-  button2State = digitalRead(button2Pin);
-  button3State = digitalRead(button3Pin);
-
-  if ((button1State == LOW) && (DOWN == false)){
-       UP = true;
-       digitalWrite(ledVerdePin, HIGH);  // turn the LED on
-       delay(6000);
-       digitalWrite(ledVerdePin, LOW);  // turn the LED off
-       UP = false;
-  } else if ((button2State == LOW) && (UP == false)){
-       DOWN = true;
-       digitalWrite(ledRojoPin, HIGH);  // turn the LED on
-       delay(6000);
-       digitalWrite(ledRojoPin, LOW);  // turn the LED off
-       DOWN = false;
-  } else if ((button2State == LOW) ){
-       DOWN = false;
-       UP = false;
-  }
- 
-
-  // Don't forget that we use = when we're assigning a value,
-  // and use == when we're testing a value for equivalence.
-}
-*/
