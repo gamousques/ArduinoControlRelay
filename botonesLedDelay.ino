@@ -3,7 +3,7 @@
 
 // Initialize Timer vvalues
 long previousMillis = 0;        // will store last time LED was updated
-long interval = 60000;           // interval at which to blink (milliseconds) 2 mins
+long interval = 50000;           // interval at which to blink (milliseconds) 2 mins
 
 //Set Pin definiton
 
